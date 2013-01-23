@@ -1,4 +1,11 @@
+build/
+ipch/
 *.suo
-*.vcxproj.user
 *.sdf
+*.opensdf
+*.vcxproj.user
+*.vtg
+*.vpj
+*.vpw
+*.vpwhist
 
