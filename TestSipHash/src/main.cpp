@@ -95,7 +95,7 @@ static void	TestKey () {
 	SipHash::Key	k (k_str, k_len) ;
 
         const uint64_t *	kp = k.getKey () ;
-	assert (kp [0] == from_string (k_str, 8)) ;
+	assert (kp [0] == from_string (k_str + 0, 8)) ;
 	assert (kp [1] == from_string (k_str + 8, 1)) ;
         std::cerr << "k0 = 0x" << put_hex (kp [0], 16) << std::endl ;
         std::cerr << "k1 = 0x" << put_hex (kp [1], 16) << std::endl ;
@@ -106,7 +106,7 @@ static void	TestKey () {
 	SipHash::Key	k (k_str, k_len) ;
 
         const uint64_t *	kp = k.getKey () ;
-	assert (kp [0] == from_string (k_str, 8)) ;
+	assert (kp [0] == from_string (k_str + 0, 8)) ;
 	assert (kp [1] == from_string (k_str + 8, 8)) ;
         std::cerr << "k0 = 0x" << put_hex (kp [0], 16) << std::endl ;
         std::cerr << "k1 = 0x" << put_hex (kp [1], 16) << std::endl ;

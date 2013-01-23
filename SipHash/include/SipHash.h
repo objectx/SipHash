@@ -28,7 +28,56 @@ namespace SipHash {
 	const uint64_t *	getKey () const {
 	    return k_ ;
 	}
+	uint64_t	K0 () const {
+	    return k_ [0] ;
+	}
+	uint64_t	K1 () const {
+	    return k_ [1] ;
+	}
     } ;
+
+    template <size_t C_, size_t D_>
+	class Hasher {
+	private:
+	    static void	SipRound (uint64_t *v) {
+		v [0] += v [1] ; v [2] += v [3] ;
+		v [1] <<= 13   ; v [3] <<= 16 ;
+		v [1] ^= v [0] ; v [3] ^= v [2] ;
+		v [0] <<= 32 ;
+		v [2] += v [1] ; v [0] += v [3] ;
+		v [1] <<= 17 ; v [3] <<= 21 ;
+		v [1] ^= v [2] ; v [3] ^= v [0] ;
+		v [2] <<= 32 ;
+	    }
+	public:
+	    static uint64_t	Compute (const Key &key, const void *values, size_t length) {
+		uint64_t	v [4] ;
+		v [0] = key.K0 () ^ 0x736f6d6570736575ul ;
+		v [1] = key.K1 () ^ 0x646f72616e646f6dul ;
+		v [2] = key.K0 () ^ 0x6c7967656e657261ul ;
+		v [3] = key.K1 () ^ 0x7465646279746573ul ;
+
+		const uint8_t *	p = static_cast<const uint8_t *> (values) ;
+
+		int_fast64_t	n = static_cast<int_fast64_t> (length) / 8 ;
+		// Process full (== 64bits) blocks.
+		for (int_fast64_t i = 0 ; i < n ; ++i) {
+		    uint_fast64_t	m = ((static_cast<uint64_t> (p [8 * i + 0]) <<  0) |
+					 (static_cast<uint64_t> (p [8 * i + 1]) <<  8) |
+					 (static_cast<uint64_t> (p [8 * i + 2]) << 16) |
+					 (static_cast<uint64_t> (p [8 * i + 3]) << 24) |
+					 (static_cast<uint64_t> (p [8 * i + 4]) << 32) |
+					 (static_cast<uint64_t> (p [8 * i + 5]) << 40) |
+					 (static_cast<uint64_t> (p [8 * i + 6]) << 48) |
+					 (static_cast<uint64_t> (p [8 * i + 7]) << 56)) ;
+		    v [3] ^= m ;
+		    for (int_fast32_t c = 0 ; c < C_ ; ++c) {
+			SipRound (v) ;
+		    }
+		    v [0] ^= m ;
+		}
+	    }
+        } ;
 }	/* [end of namespace SipHash] */
 
 #endif	/* siphash_h__34171f9848f6ced9262513a7f77b5d97 */
