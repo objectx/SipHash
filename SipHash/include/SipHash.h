@@ -46,13 +46,25 @@ namespace SipHash {
 	}
     } ;
 
-    /** Generic version of SipHash.  */
+    /**
+     * Generic version of SipHash.
+     *
+     * @param cntCompression
+     *               # of compression round.
+     * @param cntFinalization
+     *               # of finalization round.
+     * @param iv     The initial vector.
+     * @param data   Data to compute the hash.
+     * @param length # of bytes to process.
+     *
+     * @return Computed hash.
+     */
     uint_fast64_t	Compute (size_t cntCompression, size_t cntFinalization,
 				 const IV &iv, const void *data, size_t length) ;
 
-    /** Equivalent to Compute (2, 4, iv, data, length) */
+    /** Equivalent to Compute (2, 4, iv, data, length). */
     uint_fast64_t	Compute_2_4 (const IV &iv, const void *data, size_t length) ;
-    /** Equivalent to Compute (4, 8, iv, data, length) */
+    /** Equivalent to Compute (4, 8, iv, data, length). */
     uint_fast64_t	Compute_4_8 (const IV &iv, const void *data, size_t length) ;
 }	/* end of [namespace SipHash] */
 
