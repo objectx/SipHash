@@ -113,8 +113,28 @@ static void	TestKey () {
     }
 }
 
+const uint8_t	test_key [16] = {
+    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+    0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f
+} ;
+
+const uint8_t	test_message [15] = {
+    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+    0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e
+} ;
+
+static void	TestSipHash () {
+    SipHash::Key	key (test_key, 16) ;
+    assert (key.K0 () == 0x0706050403020100u) ;
+    assert (key.K1 () == 0x0f0e0d0c0b0a0908u) ;
+
+    uint64_t	val = SipHash::Hasher<2, 4>::Compute (key, test_message, sizeof (test_message)) ;
+    assert (val == 0xa129ca6149be45e5u) ;
+}
+
 int	main (int argc, char **argv) {
     TestKey () ;
+    TestSipHash () ;
     return 0 ;
 }
 
