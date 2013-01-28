@@ -9,27 +9,27 @@
 
 namespace SipHash {
     IV::IV (const void *start, size_t length) {
-	k_ [0] = 0 ;
-	k_ [1] = 0 ;
-	uint64_t	v = 0 ;
-	int_fast32_t	shift_count = 0 ;
+	Assign (start, length) ;
+    }
+
+    IV &	IV::Assign (const void *start, size_t length) {
 	const uint8_t *	const	p = static_cast<const uint8_t *> (start) ;
 
-	size_t	l = std::min (length, static_cast<size_t> (8)) ;
-	for (size_t i = 0 ; i < l ; ++i, shift_count += 8) {
-	    v |= static_cast<uint64_t> (p [i]) << shift_count ;
-	}
-	k_ [0] = v ;
-
-	if (8 < length) {
-            l = std::min (length, static_cast<size_t> (16)) ;
-	    v = 0 ;
-	    shift_count = 0 ;
-	    for (size_t i = 8 ; i < l ; ++i, shift_count += 8) {
-		v |= static_cast<uint64_t> (p [i]) << shift_count ;
+	uint_fast64_t	k_0 = 0 ;
+	uint_fast64_t	k_1 = 0 ;
+	{
+	    for (size_t i = 0, n = std::min (length, static_cast<size_t> (8)) ; i < n ; ++i) {
+		k_0 |= static_cast<uint64_t> (p [i + 0]) << (8 * i) ;
 	    }
-	    k_ [1] = v ;
 	}
+	if (8 < length) {
+	    for (size_t i = 0, n = std::min (length, static_cast<size_t> (16)) - 8 ; i < n ; ++i) {
+		k_1 |= static_cast<uint64_t> (p [i + 8]) << (8 * i) ;
+	    }
+	}
+	k_ [0] = k_0 ;
+	k_ [1] = k_1 ;
+	return *this ;
     }
 }
 /*
