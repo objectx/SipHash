@@ -47,73 +47,13 @@ namespace SipHash {
     } ;
 
     /** Generic version of SipHash.  */
-    template <size_t C_, size_t D_>
-	class Hasher {
-	private:
-            static inline uint64_t rol (uint64_t val, int32_t cnt) {
-                return (val << cnt) | (val >> (64 - cnt)) ;
-            }
-	    static void	SipRound (uint64_t *v) {
-		v [0] += v [1] ; v [2] += v [3] ;
-		v [1] = rol (v [1], 13)   ; v [3] = rol (v [3], 16) ;
-		v [1] ^= v [0] ; v [3] ^= v [2] ;
-		v [0] = rol (v [0], 32) ;
-		v [2] += v [1] ; v [0] += v [3] ;
-		v [1] = rol (v [1], 17) ; v [3] = rol (v [3], 21) ;
-		v [1] ^= v [2] ; v [3] ^= v [0] ;
-		v [2] = rol (v [2], 32) ;
-	    }
-	public:
-	    static uint64_t	Compute (const IV &key, const void *values, size_t length) {
-		uint64_t	v [4] ;
-		v [0] = key.K0 () ^ 0x736f6d6570736575ul ;
-		v [1] = key.K1 () ^ 0x646f72616e646f6dul ;
-		v [2] = key.K0 () ^ 0x6c7967656e657261ul ;
-		v [3] = key.K1 () ^ 0x7465646279746573ul ;
+    uint_fast64_t	Compute (size_t cntCompression, size_t cntFinalization,
+				 const IV &iv, const void *data, size_t length) ;
 
-		const uint8_t *	p = static_cast<const uint8_t *> (values) ;
-
-		int_fast64_t	n = static_cast<int_fast64_t> (length) / 8 ;
-		// Process full (== 64bits) blocks.
-		for (int_fast64_t i = 0 ; i < n ; ++i) {
-		    uint_fast64_t	m = ((static_cast<uint64_t> (p [8 * i + 0]) <<  0) |
-					     (static_cast<uint64_t> (p [8 * i + 1]) <<  8) |
-					     (static_cast<uint64_t> (p [8 * i + 2]) << 16) |
-					     (static_cast<uint64_t> (p [8 * i + 3]) << 24) |
-					     (static_cast<uint64_t> (p [8 * i + 4]) << 32) |
-					     (static_cast<uint64_t> (p [8 * i + 5]) << 40) |
-					     (static_cast<uint64_t> (p [8 * i + 6]) << 48) |
-					     (static_cast<uint64_t> (p [8 * i + 7]) << 56)) ;
-		    v [3] ^= m ;
-		    for (int_fast32_t c = 0 ; c < C_ ; ++c) {
-			SipRound (v) ;
-		    }
-		    v [0] ^= m ;
-		}
-		{
-		    uint_fast64_t	lastval = (static_cast<int_fast64_t> (length) & 0xFFu) << 56 ;
-		    int_fast64_t	remain = static_cast<int_fast64_t> (length) - (8 * n) ;
-
-		    const uint8_t *	q = &(p [8 * n]) ;
-		    for (int_fast64_t i = 0 ; i < remain ; ++i) {
-			lastval |= static_cast<uint_fast64_t> (q [i]) << (i * 8) ;
-		    }
-		    v [3] ^= lastval ;
-		    for (int_fast32_t c = 0 ; c < C_ ; ++c) {
-			SipRound (v) ;
-		    }
-		    v [0] ^= lastval ;
-		}
-		// Finalize
-		{
-		    v [2] ^= 0xFFu ;
-		    for (int_fast32_t d = 0 ; d < D_ ; ++d) {
-			SipRound (v) ;
-		    }
-		}
-		return v [0] ^ v [1] ^ v [2] ^ v [3] ;
-	    }
-        } ;
+    /** Equivalent to Compute (2, 4, iv, data, length) */
+    uint_fast64_t	Compute_2_4 (const IV &iv, const void *data, size_t length) ;
+    /** Equivalent to Compute (4, 8, iv, data, length) */
+    uint_fast64_t	Compute_4_8 (const IV &iv, const void *data, size_t length) ;
 }	/* [end of namespace SipHash] */
 
 #endif	/* siphash_h__34171f9848f6ced9262513a7f77b5d97 */
