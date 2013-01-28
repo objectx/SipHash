@@ -1,5 +1,5 @@
 /*
- * SipHash.cpp:
+ * SipHash_2_4.cpp:
  *
  * Author(s): objectx
  */
@@ -9,9 +9,7 @@
 
 namespace SipHash {
 
-    uint_fast64_t	Compute (size_t cntCompression, size_t cntFinalization,
-				 const IV &iv,
-				 const void *data, size_t length) {
+    uint_fast64_t	Compute_2_4 (const IV &iv, const void *data, size_t length) {
 	uint_fast64_t	v0 = iv.K0 () ^ Internal::MASK_0 ;
 	uint_fast64_t	v1 = iv.K1 () ^ Internal::MASK_1 ;
 	uint_fast64_t	v2 = iv.K0 () ^ Internal::MASK_2 ;
@@ -24,9 +22,8 @@ namespace SipHash {
 	for (int_fast64_t i = 0 ; i < n ; ++i) {
 	    uint_fast64_t	m = Internal::Read8 (&p [8 * i]) ;
 	    v3 ^= m ;
-	    for (int_fast32_t r = 0 ; r < cntCompression ; ++r) {
-		Internal::SipRound (v0, v1, v2, v3) ;
-	    }
+	    Internal::SipRound (v0, v1, v2, v3) ;
+	    Internal::SipRound (v0, v1, v2, v3) ;
 	    v0 ^= m ;
 	}
 	{
@@ -38,21 +35,21 @@ namespace SipHash {
 		lastval |= static_cast<uint_fast64_t> (q [i]) << (i * 8) ;
 	    }
 	    v3 ^= lastval ;
-	    for (int_fast32_t r = 0 ; r < cntCompression ; ++r) {
-		Internal::SipRound (v0, v1, v2, v3) ;
-	    }
+	    Internal::SipRound (v0, v1, v2, v3) ;
+	    Internal::SipRound (v0, v1, v2, v3) ;
 	    v0 ^= lastval ;
 	}
 	// Finalize
 	{
 	    v2 ^= 0xFFu ;
-	    for (int_fast32_t r = 0 ; r < cntFinalization ; ++r) {
-		Internal::SipRound (v0, v1, v2, v3) ;
-	    }
+	    Internal::SipRound (v0, v1, v2, v3) ;
+	    Internal::SipRound (v0, v1, v2, v3) ;
+	    Internal::SipRound (v0, v1, v2, v3) ;
+	    Internal::SipRound (v0, v1, v2, v3) ;
 	}
 	return v0 ^ v1 ^ v2 ^ v3 ;
     }
-}
+}	/* end of [namespace SipHash] */
 /*
  * [END OF FILE]
  */

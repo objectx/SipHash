@@ -54,7 +54,7 @@ namespace SipHash {
     uint_fast64_t	Compute_2_4 (const IV &iv, const void *data, size_t length) ;
     /** Equivalent to Compute (4, 8, iv, data, length) */
     uint_fast64_t	Compute_4_8 (const IV &iv, const void *data, size_t length) ;
-}	/* [end of namespace SipHash] */
+}	/* end of [namespace SipHash] */
 
 #endif	/* siphash_h__34171f9848f6ced9262513a7f77b5d97 */
 /*
