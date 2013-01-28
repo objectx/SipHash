@@ -128,8 +128,11 @@ static void	TestSipHash () {
     assert (key.K0 () == 0x0706050403020100u) ;
     assert (key.K1 () == 0x0f0e0d0c0b0a0908u) ;
 
-    uint64_t	val = SipHash::Hasher<2, 4>::Compute (key, test_message, sizeof (test_message)) ;
+    uint8_t tmp [sizeof (test_message)] ;
+    memcpy (tmp, test_message, sizeof (test_message)) ;
+    uint64_t	val = SipHash::Hasher<2, 4>::Compute (key, tmp, sizeof (test_message)) ;
     assert (val == 0xa129ca6149be45e5u) ;
+    std::cerr << "val = 0x" << put_hex (val, 16) << std::endl ;
 }
 
 int	main (int argc, char **argv) {

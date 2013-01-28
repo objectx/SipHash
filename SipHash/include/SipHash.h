@@ -1,5 +1,5 @@
 /*
- * SipHash.h:
+ * SipHash.h: Implements SipHash.
  *
  * Author(s): objectx
  */
@@ -88,31 +88,8 @@ namespace SipHash {
 		    int_fast64_t	remain = static_cast<int_fast64_t> (length) - (8 * n) ;
 
 		    const uint8_t *	q = &(p [8 * n]) ;
-		    switch (remain) {
-		    case 7:
-			lastval |= static_cast<uint_fast64_t> (q [6]) << 48 ;
-			/*FALLTHROUGH*/
-		    case 6:
-			lastval |= static_cast<uint_fast64_t> (q [5]) << 40 ;
-			/*FALLTHROUGH*/
-		    case 5:
-			lastval |= static_cast<uint_fast64_t> (q [4]) << 32 ;
-			/*FALLTHROUGH*/
-		    case 4:
-			lastval |= static_cast<uint_fast64_t> (q [3]) << 24 ;
-			/*FALLTHROUGH*/
-		    case 3:
-			lastval |= static_cast<uint_fast64_t> (q [2]) << 16 ;
-			/*FALLTHROUGH*/
-		    case 2:
-			lastval |= static_cast<uint_fast64_t> (q [1]) <<  8 ;
-			/*FALLTHROUGH*/
-		    case 1:
-			lastval |= static_cast<uint_fast64_t> (q [0]) <<  0 ;
-			/*FALLTHROUGH*/
-		    case 0:
-		    default:
-			break ;
+		    for (int_fast64_t i = 0 ; i < remain ; ++i) {
+			lastval |= static_cast<uint_fast64_t> (q [i]) << (i * 8) ;
 		    }
 		    v [3] ^= lastval ;
 		    for (int_fast32_t c = 0 ; c < C_ ; ++c) {

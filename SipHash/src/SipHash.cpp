@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <SipHash.h>
 
+
 namespace SipHash {
     Key::Key (const void *start, size_t length) {
 	k_ [0] = 0 ;
