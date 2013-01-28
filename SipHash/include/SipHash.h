@@ -11,20 +11,30 @@
 #include <stdint.h>
 
 namespace SipHash {
-    /** The key to craete initial vector */
-    class Key {
+    /** The key to create initial vector */
+    class IV {
     private:
 	uint64_t	k_ [2] ;
     public:
-	Key (uint64_t k0, uint64_t k1) {
+	IV (uint64_t k0, uint64_t k1) {
 	    k_ [0] = k0 ;
 	    k_ [1] = k1 ;
 	}
-	Key (const Key &src) {
+	IV (const IV &src) {
 	    k_ [0] = src.k_ [0] ;
 	    k_ [1] = src.k_ [1] ;
 	}
-	Key (const void *start, size_t length) ;
+	IV (const void *start, size_t length) ;
+	IV &	Assign (const IV &src) {
+	    k_ [0] = src.k_ [0] ;
+	    k_ [1] = src.k_ [1] ;
+	    return *this ;
+	}
+	IV &	Assign (const void *start, size_t length) ;
+
+	IV &	operator = (const IV &src) {
+	    return Assign (src) ;
+	}
 	const uint64_t *	getKey () const {
 	    return k_ ;
 	}
@@ -36,15 +46,12 @@ namespace SipHash {
 	}
     } ;
 
+    /** Generic version of SipHash.  */
     template <size_t C_, size_t D_>
 	class Hasher {
 	private:
             static inline uint64_t rol (uint64_t val, int32_t cnt) {
-#if defined (_MSC_VER)
-                return _rotl64 (val, cnt) ;
-#else
                 return (val << cnt) | (val >> (64 - cnt)) ;
-#endif
             }
 	    static void	SipRound (uint64_t *v) {
 		v [0] += v [1] ; v [2] += v [3] ;
@@ -57,7 +64,7 @@ namespace SipHash {
 		v [2] = rol (v [2], 32) ;
 	    }
 	public:
-	    static uint64_t	Compute (const Key &key, const void *values, size_t length) {
+	    static uint64_t	Compute (const IV &key, const void *values, size_t length) {
 		uint64_t	v [4] ;
 		v [0] = key.K0 () ^ 0x736f6d6570736575ul ;
 		v [1] = key.K1 () ^ 0x646f72616e646f6dul ;

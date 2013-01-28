@@ -8,7 +8,7 @@
 
 
 namespace SipHash {
-    Key::Key (const void *start, size_t length) {
+    IV::IV (const void *start, size_t length) {
 	k_ [0] = 0 ;
 	k_ [1] = 0 ;
 	uint64_t	v = 0 ;
