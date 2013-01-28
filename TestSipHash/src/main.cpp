@@ -39,6 +39,38 @@ namespace {
         put_hex_<T_> put_hex (const T_ &v, int32_t w = 0) {
             return put_hex_<T_> (v, w) ;
         }
+
+    template <typename T_>
+	class put_dec_ {
+	private:
+	    T_ const	v_ ;
+	    int32_t	w_ ;
+	public:
+	    put_dec_ (const T_ &v, int32_t w) : v_ (v), w_ (w) {
+		/* NO-OP */
+	    }
+	    std::ostream & write (std::ostream &output) const {
+		auto	mask = std::ios::adjustfield ;
+		auto	flags = output.setf (std::ios::right, mask) ;
+					  
+		char	fill = output.fill (' ') ;
+		output.width (w_) ;
+		output << v_ ;
+		output.setf (flags, mask) ;
+		output.fill (fill) ;
+		return output ;
+	    }
+        };
+
+    template<typename T_>
+	std::ostream & operator << (std::ostream &out, const put_dec_<T_> &manip) {
+	    return manip.write (out) ;
+	}
+
+    template<typename T_>
+	put_dec_<T_> put_dec (const T_ &v, int32_t w = 0) {
+	    return put_dec_<T_> (v, w) ;
+	}
 }
 
 
@@ -145,13 +177,13 @@ static void	TestSipHash () {
 	uint64_t	val24 = SipHash::Compute_2_4 (key, testvec, i) ;
 	uint64_t	expected24 = SipHash::Compute (2, 4, key, testvec, i) ;
 	assert (val24 == expected24) ;
-	std::cerr << "val24 = 0x" << put_hex (val24, 16) << " (len = " << i << ")" <<  std::endl ;
+	std::cerr << "val24 = 0x" << put_hex (val24, 16) << " (len = " << put_dec (i, 5) << ")" <<  std::endl ;
     }
     for (int_fast32_t i = 1 ; i < sizeof (testvec) ; ++i) {
 	uint64_t	val48 = SipHash::Compute_4_8 (key, testvec, i) ;
 	uint64_t	expected48 = SipHash::Compute (4, 8, key, testvec, i) ;
 	assert (val48 == expected48) ;
-	std::cerr << "val48 = 0x" << put_hex (val48, 16) << " (len = " << i << ")" <<  std::endl ;
+	std::cerr << "val48 = 0x" << put_hex (val48, 16) << " (len = " << put_dec (i, 5) << ")" <<  std::endl ;
     }
 }
 
