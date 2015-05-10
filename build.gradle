@@ -1,0 +1,38 @@
+
+apply plugin: 'cpp'
+
+model {
+    components {
+        SipHash (NativeLibrarySpec) {
+            sources {
+                cpp {
+                    source {
+                        srcDir "SipHash/src"
+                        include "**/*.cpp"
+                    }
+                    exportedHeaders {
+                        srcDir "SipHash/include"
+                    }
+                }
+            }
+        }
+        TestSipHash (NativeExecutableSpec) {
+            sources {
+                cpp {
+                    source {
+                        srcDir "TestSipHash/src"
+                        include "**/*.cpp"
+                        // preCompiledHeader "${projectDir}/TestSipHash/src/common.h"
+                    }
+                }
+            }
+            binaries.all {
+                tasks.withType (CppCompile) {
+                    includes.from "${projectDir}/Catch/include"
+                }
+                // Each executable binary produced uses the 'hello' static library binary
+                lib library: 'SipHash', linkage: 'static'
+            }
+        }
+    }
+}
