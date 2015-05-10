@@ -7,7 +7,7 @@
 #include "common.h"
 #include "TestSipHash.h"
 #include <SipHash.h>
-#include <Catch.hpp>
+#include <catch.hpp>
 
 const uint8_t   test_key [16] = {
     0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
