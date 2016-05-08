@@ -10,12 +10,12 @@
 namespace SipHash {
 
     uint_fast64_t   Compute (size_t cntCompression, size_t cntFinalization,
-                             const IV &iv,
+                             const iv_t &iv,
                              const void *data, size_t length) {
-        uint_fast64_t   v0 = iv.K0 () ^ Internal::MASK_0 ;
-        uint_fast64_t   v1 = iv.K1 () ^ Internal::MASK_1 ;
-        uint_fast64_t   v2 = iv.K0 () ^ Internal::MASK_2 ;
-        uint_fast64_t   v3 = iv.K1 () ^ Internal::MASK_3 ;
+        uint_fast64_t   v0 = iv [0] ^ Internal::MASK_0 ;
+        uint_fast64_t   v1 = iv [1] ^ Internal::MASK_1 ;
+        uint_fast64_t   v2 = iv [0] ^ Internal::MASK_2 ;
+        uint_fast64_t   v3 = iv [1] ^ Internal::MASK_3 ;
 
         const uint8_t * p = static_cast<const uint8_t *>(data) ;
 

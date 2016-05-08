@@ -20,10 +20,10 @@ const uint8_t   test_message [15] = {
 } ;
 
 TEST_CASE ("Testing SipHash", "[SipHash]") {
-    SipHash::IV key (test_key, 16) ;
+    auto const &    key = SipHash::MakeIV (test_key, 16) ;
     SECTION ("Test IV creation") {
-        REQUIRE (key.K0 () == 0x0706050403020100u) ;
-        REQUIRE (key.K1 () == 0x0f0e0d0c0b0a0908u) ;
+        REQUIRE (key [0] == 0x0706050403020100u) ;
+        REQUIRE (key [1] == 0x0f0e0d0c0b0a0908u) ;
     }
     SECTION ("Test vector should match") {
         uint8_t tmp [sizeof (test_message)] ;
