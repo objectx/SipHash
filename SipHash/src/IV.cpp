@@ -4,7 +4,7 @@
  * Author(s): objectx
  */
 #include <algorithm>
-#include <SipHash.h>
+#include <SipHash.hpp>
 
 namespace SipHash {
     IV::IV (const void *start, size_t length) {

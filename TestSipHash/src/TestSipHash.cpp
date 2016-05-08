@@ -6,7 +6,7 @@
  */
 #include "common.h"
 #include "TestSipHash.h"
-#include <SipHash.h>
+#include <SipHash.hpp>
 #include <catch.hpp>
 
 const uint8_t   test_key [16] = {

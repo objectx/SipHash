@@ -5,7 +5,7 @@
  */
 #include "common.h"
 #include "TestSipHash.h"
-#include <SipHash.h>
+#include <SipHash.hpp>
 #define CATCH_CONFIG_RUNNER
 #include <catch.hpp>
 

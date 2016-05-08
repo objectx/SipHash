@@ -3,8 +3,8 @@
  *
  * Author(s): objectx
  */
-#ifndef siphash_h__34171f9848f6ced9262513a7f77b5d97
-#define siphash_h__34171f9848f6ced9262513a7f77b5d97    1
+#ifndef siphash_hpp__818E62D2_123A_4477_B550_25D22685FD72
+#define siphash_hpp__818E62D2_123A_4477_B550_25D22685FD72   1
 
 #include <sys/types.h>
 #include <stdint.h>
@@ -75,7 +75,7 @@ namespace SipHash {
     uint_fast64_t   Compute_4_8 (const IV &iv, const void *data, size_t length);
 }    /* end of [namespace SipHash] */
 
-#endif	/* siphash_h__34171f9848f6ced9262513a7f77b5d97 */
+#endif	/* siphash_hpp__818E62D2_123A_4477_B550_25D22685FD72 */
 /*
  * [END OF FILE]
  */

@@ -6,7 +6,7 @@
  */
 #include "common.h"
 #include "TestSipHash.h"
-#include <SipHash.h>
+#include <SipHash.hpp>
 #include <catch.hpp>
 
 SCENARIO ("Testing IV creation", "[IV]") {

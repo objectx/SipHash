@@ -4,7 +4,7 @@
  * Author(s): objectx
  */
 #include <algorithm>
-#include <SipHash.h>
+#include <SipHash.hpp>
 #include "internal.h"
 
 namespace SipHash {
