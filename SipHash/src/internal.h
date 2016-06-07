@@ -3,6 +3,7 @@
  *
  * Author(s): objectx
  */
+#pragma once
 #ifndef internal_h__2adc4b88454ac9f67b802e8d0468b288
 #define internal_h__2adc4b88454ac9f67b802e8d0468b288    1
 
@@ -49,15 +50,15 @@ namespace SipHash {
         const uint64_t MASK_3 = 0x7465646279746573ul ;
 
         inline uint_fast64_t    Read8 (const void *data) {
-            const uint8_t *p = static_cast<const uint8_t *> (data);
-            return (  (static_cast<uint_fast64_t> (p[0]) <<  0)
-                    | (static_cast<uint_fast64_t> (p[1]) <<  8)
-                    | (static_cast<uint_fast64_t> (p[2]) << 16)
-                    | (static_cast<uint_fast64_t> (p[3]) << 24)
-                    | (static_cast<uint_fast64_t> (p[4]) << 32)
-                    | (static_cast<uint_fast64_t> (p[5]) << 40)
-                    | (static_cast<uint_fast64_t> (p[6]) << 48)
-                    | (static_cast<uint_fast64_t> (p[7]) << 56));
+            auto p = static_cast<const uint8_t *> (data);
+            return ( (static_cast<uint_fast64_t> (p[0]) <<  0)
+                   | (static_cast<uint_fast64_t> (p[1]) <<  8)
+                   | (static_cast<uint_fast64_t> (p[2]) << 16)
+                   | (static_cast<uint_fast64_t> (p[3]) << 24)
+                   | (static_cast<uint_fast64_t> (p[4]) << 32)
+                   | (static_cast<uint_fast64_t> (p[5]) << 40)
+                   | (static_cast<uint_fast64_t> (p[6]) << 48)
+                   | (static_cast<uint_fast64_t> (p[7]) << 56));
         }
     }
 }    /* end of [namespace SipHash::Internal] */

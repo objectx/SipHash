@@ -3,6 +3,7 @@
  *
  * Author(s): objectx
  */
+#pragma once
 #ifndef siphash_hpp__818E62D2_123A_4477_B550_25D22685FD72
 #define siphash_hpp__818E62D2_123A_4477_B550_25D22685FD72   1
 
