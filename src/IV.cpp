@@ -25,8 +25,4 @@ namespace SipHash {
         }
         return iv_t { { k_0, k_1 } };
     }
-}    /* end of [namespace SipHash] */
-
-/*
- * [END OF FILE]
- */
+}

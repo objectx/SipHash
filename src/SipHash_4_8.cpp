@@ -58,7 +58,4 @@ namespace SipHash {
         return v0 ^ v1 ^ v2 ^ v3;
     }
 
-}    /* end of [namespace SipHash] */
-/*
- * [END OF FILE]
- */
+}
