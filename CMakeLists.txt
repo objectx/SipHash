@@ -13,5 +13,5 @@ set (CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
 enable_testing ()
 
-add_subdirectory (SipHash)
-add_subdirectory (TestSipHash)
+add_subdirectory (src)
+add_subdirectory (test)
